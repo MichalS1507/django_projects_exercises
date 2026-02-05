@@ -1,0 +1,37 @@
+# Django
+*.sqlite3
+db.sqlite3
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.log
+
+# Virtual environment
+venv/
+env/
+ENV/
+virtualenv/
+
+# PyCharm
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+*.env
+.env.local
+.env.*.local
+
+# Media files (ak budeš mať)
+media/
+
+# Static files (ak budeš kompilovať)
+staticfiles/
