@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Tasks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .task {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .task.completed {
+            background-color: #f9f9f9;
+        }
+        .task.overdue {
+            border-left: 3px solid red;
+        }
+        .task-title.completed {
+            text-decoration: line-through;
+            color: #666;
+        }
+        .priority-high { font-weight: bold; color: #dc3545; }
+        .priority-medium { font-weight: bold; color: #ffc107; }
+        .priority-low { font-weight: bold; color: #28a745; }
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-left: 5px;
+        }
+        .badge.completed {
+            background-color: #28a745;
+            color: white;
+        }
+        .badge.pending {
+            background-color: #6c757d;
+            color: white;
+        }
+        .badge.overdue {
+            background-color: #dc3545;
+            color: white;
+        }
+        .date {
+            color: #666;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Task Manager</h1>
+    <p>Welcome, <strong>{{ user.username }}</strong>!</p>
+
+    <h2>Your Tasks</h2>
+
+    {% if tasks %}
+        {% for task in tasks %}
+            <div class="task {% if task.completed %}completed{% endif %} {% if task.is_overdue %}overdue{% endif %}">
+                <!-- Názov úlohy -->
+                <span class="task-title {% if task.completed %}completed{% endif %}">
+                    {{ task.title }}
+                </span>
+
+                <!-- Priorita -->
+                <span class="priority-{% if task.priority == 1 %}high{% elif task.priority == 2 %}medium{% else %}low{% endif %}">
+                    [{{ task.get_priority_display }}]
+                </span>
+
+                <!-- Dátum -->
+                <span class="date">
+                    {% if task.due_date %}
+                        Due: {{ task.due_date|date:"Y-m-d H:i" }}
+                    {% else %}
+                        No deadline
+                    {% endif %}
+                </span>
+
+                <!-- Status (Completed/Pending) -->
+                {% if task.completed %}
+                    <span class="badge completed">COMPLETED</span>
+                {% else %}
+                    <span class="badge pending">PENDING</span>
+                {% endif %}
+
+                <!-- Overdue warning -->
+                {% if task.is_overdue %}
+                    <span class="badge overdue">OVERDUE</span>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You have no tasks yet.</p>
+    {% endif %}
+
+    <p style="margin-top: 30px;">
+        <a href="{% url 'logout' %}">Logout</a>
+    </p>
+</body>
+</html>

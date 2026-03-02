@@ -22,14 +22,14 @@ class Category(models.Model):
 
 class Task(models.Model):
     """
-    Model representing a task in the todo application.
+    Model representing a task in the todo_app application.
     Each task belongs to a user and optionally to a category.
     """
     # Priority choices for the task
     PRIORITY_CHOICES = [
-        ('H', 'High'),
-        ('M', 'Medium'),
-        ('L', 'Low'),
+        (1, 'High'),
+        (2, 'Medium'),
+        (3, 'Low'),
     ]
 
     # Basic task information
@@ -42,8 +42,7 @@ class Task(models.Model):
 
     # Status fields
     completed = models.BooleanField(default=False)  # Task completion status
-    priority = models.CharField(max_length=1, choices=PRIORITY_CHOICES,
-                                default='L')    # Task priority (Low, Medium, High)
+    priority = models.IntegerField(choices=PRIORITY_CHOICES, default=3)    # Task priority (Low, Medium, High)
 
     # Relationships
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True,
@@ -85,9 +84,9 @@ class Task(models.Model):
         Return CSS color code based on task priority.
         Used for visual styling in templates.
         """
-        colors = {'H': '#dc3545',   # Red for High priority
-                  'M': '#ffc107',   # Yellow for Medium priority
-                  'L': '#28a745'    # Green for Low priority
+        colors = {'1': '#dc3545',   # Red for High priority
+                  '2': '#ffc107',   # Yellow for Medium priority
+                  '3': '#28a745'    # Green for Low priority
         }
         return colors.get(self.priority, '#6c757d') # Default gray if priority not found
 
