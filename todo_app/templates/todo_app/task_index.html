@@ -64,17 +64,16 @@
     {% if tasks %}
         {% for task in tasks %}
             <div class="task {% if task.completed %}completed{% endif %} {% if task.is_overdue %}overdue{% endif %}">
-                <!-- Názov úlohy -->
                 <span class="task-title {% if task.completed %}completed{% endif %}">
-                    {{ task.title }}
+                    <a href="{% url 'todo_app:task_detail' task.pk %}">
+                        {{ task.title }}
+                    </a>
                 </span>
 
-                <!-- Priorita -->
                 <span class="priority-{% if task.priority == 1 %}high{% elif task.priority == 2 %}medium{% else %}low{% endif %}">
                     [{{ task.get_priority_display }}]
                 </span>
 
-                <!-- Dátum -->
                 <span class="date">
                     {% if task.due_date %}
                         Due: {{ task.due_date|date:"Y-m-d H:i" }}
@@ -83,14 +82,12 @@
                     {% endif %}
                 </span>
 
-                <!-- Status (Completed/Pending) -->
                 {% if task.completed %}
                     <span class="badge completed">COMPLETED</span>
                 {% else %}
                     <span class="badge pending">PENDING</span>
                 {% endif %}
 
-                <!-- Overdue warning -->
                 {% if task.is_overdue %}
                     <span class="badge overdue">OVERDUE</span>
                 {% endif %}
