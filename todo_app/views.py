@@ -1,5 +1,7 @@
+from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import TaskForm
 from .models import Task
 
 # Create your views here.
@@ -32,3 +34,14 @@ class TaskDetailView(LoginRequiredMixin, generic.DetailView):
 
     def get_queryset(self):
         return Task.objects.filter(user=self.request.user)
+
+class TaskCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Task
+    form_class = TaskForm
+    template_name = "todo_app/task_form.html"
+    success_url = reverse_lazy('todo_app:task_list')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+

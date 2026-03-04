@@ -61,16 +61,27 @@
 
     <h2>Your Tasks</h2>
 
+    <div class="nargin-bottom: 20px;">
+        <a href="{% url 'todo_app:new_task' %}"
+           style="display: inline-block; padding: 10px 20px;
+           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+           color: white; text-decoration: none; border-radius: 5px;">
+            + Create New Task
+        </a>
+    </div>
+
     {% if tasks %}
         {% for task in tasks %}
-            <div class="task {% if task.completed %}completed{% endif %} {% if task.is_overdue %}overdue{% endif %}">
+            <div class="task {% if task.completed %}completed{% endif %}
+            {% if task.is_overdue %}overdue{% endif %}">
                 <span class="task-title {% if task.completed %}completed{% endif %}">
                     <a href="{% url 'todo_app:task_detail' task.pk %}">
                         {{ task.title }}
                     </a>
                 </span>
 
-                <span class="priority-{% if task.priority == 1 %}high{% elif task.priority == 2 %}medium{% else %}low{% endif %}">
+                <span class="priority-{% if task.priority == 1 %}high
+                {% elif task.priority == 2 %}medium{% else %}low{% endif %}">
                     [{{ task.get_priority_display }}]
                 </span>
 

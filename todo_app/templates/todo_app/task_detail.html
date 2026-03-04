@@ -149,7 +149,8 @@ background-color: {{ task.category.color }}; border-radius: 3px;"></span>
         {% endif %}
 
         <div class="actions">
-            <a href="{% url 'todo_app:task_list' %}" class="btn btn-primary">BACK TO LIST</a>
+            <a href="{% url 'todo_app:task_list' %}" class="btn btn-primary">
+                BACK TO LIST</a>
 
             <a href="#" class="btn btn-warning">EDIT</a>
             <a href="#" class="btn btn-danger">DELETE</a>
