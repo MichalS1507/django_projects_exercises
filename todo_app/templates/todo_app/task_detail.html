@@ -153,10 +153,15 @@
             <a href="{% url 'todo_app:task_list' %}" class="btn btn-primary">
                 BACK TO LIST</a>
 
-            <a href="{% url 'todo_app:update_task' task.pk %}" class="btn btn-warning">EDIT</a>
+            <a href="{% url 'todo_app:update_task' task.pk %}"
+               class="btn btn-warning">EDIT</a>
             <a href="#" class="btn btn-danger">DELETE</a>
             {% if not task.completed %}
-                <a href="#" class="btn btn-success">COMPLETE</a>
+                <form method="post" action="{% url 'todo_app:complete_task' task.pk %}"
+                      style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">COMPLETE</button>
+                </form>
             {% endif %}
         </div>
     </div>

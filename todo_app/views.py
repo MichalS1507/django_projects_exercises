@@ -1,5 +1,6 @@
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import TaskForm
 from .models import Task
@@ -54,3 +55,8 @@ class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     def get_queryset(self):
         return Task.objects.filter(user=self.request.user)
 
+class TaskCompleteView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        task = get_object_or_404(Task, pk=pk, user=request.user)
+        task.mark_completed()
+        return redirect('todo_app:task_detail', pk=pk)
