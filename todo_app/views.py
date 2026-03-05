@@ -60,3 +60,16 @@ class TaskCompleteView(LoginRequiredMixin, View):
         task = get_object_or_404(Task, pk=pk, user=request.user)
         task.mark_completed()
         return redirect('todo_app:task_detail', pk=pk)
+
+class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Task
+    template_name = "todo_app/task_detail.html"
+    success_url = reverse_lazy('todo_app:task_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['delete_mode'] = True
+        return context
+
+    def get_queryset(self):
+        return Task.objects.filter(user=self.request.user)

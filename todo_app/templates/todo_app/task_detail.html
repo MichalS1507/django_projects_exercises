@@ -130,8 +130,8 @@
                 {% endif %}
             </p>
 
-            <p><span class="label">Created:</span> {{ task.created_date|
-                date:"Y-m-d H:i" }}</p>
+            <p><span class="label">Created:</span>
+                {{ task.created_date|date:"Y-m-d H:i" }}</p>
 
             <p><span class="label">Due date:</span>
                 {% if task.due_date %}
@@ -155,7 +155,7 @@
 
             <a href="{% url 'todo_app:update_task' task.pk %}"
                class="btn btn-warning">EDIT</a>
-            <a href="#" class="btn btn-danger">DELETE</a>
+            <a href="{% url 'todo_app:delete_task' task.pk %}" class="btn btn-danger">DELETE</a>
             {% if not task.completed %}
                 <form method="post" action="{% url 'todo_app:complete_task' task.pk %}"
                       style="display: inline;">
@@ -166,4 +166,19 @@
         </div>
     </div>
 </body>
+{% if delete_mode %}
+<div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;">
+    <div style="background: white; border-radius: 10px; max-width: 500px; width: 90%; padding: 30px; text-align: center;">
+        <div style="font-size: 48px; color: #dc3545; margin-bottom: 20px;">WARNING</div>
+        <h2 style="margin-bottom: 20px;">Delete "{{ task.title }}"?</h2>
+        <p style="margin-bottom: 30px; color: #666;">This action cannot be undone.</p>
+
+        <form method="post" action="{% url 'todo_app:delete_task' task.pk %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger" style="margin-right: 10px;">YES, DELETE</button>
+            <a href="{% url 'todo_app:task_detail' task.pk %}" class="btn btn-secondary">CANCEL</a>
+        </form>
+    </div>
+</div>
+{% endif %}
 </html>
