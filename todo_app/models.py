@@ -84,9 +84,9 @@ class Task(models.Model):
         Return CSS color code based on task priority.
         Used for visual styling in templates.
         """
-        colors = {'1': '#dc3545',   # Red for High priority
-                  '2': '#ffc107',   # Yellow for Medium priority
-                  '3': '#28a745'    # Green for Low priority
+        colors = {1: '#dc3545',   # Red for High priority
+                  2: '#ffc107',   # Yellow for Medium priority
+                  3: '#28a745'    # Green for Low priority
         }
         return colors.get(self.priority, '#6c757d') # Default gray if priority not found
 
