@@ -1,58 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
-        }
-        .error {
-            color: red;
-            padding: 10px;
-            background-color: #ffeeee;
-            border-radius: 5px;
-        }
-        input {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0 15px 0;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <h2>Login</h2>
+{% extends "base.html" %}
 
+{% block title %}Login{% endblock %}
+
+{% block header %}Welcome Back{% endblock %}
+
+{% block subheader %}Please log in to continue{% endblock %}
+
+{% block content %}
     {% if form.errors %}
-        <div class="error">
+        <div class="badge badge-overdue" style="margin-bottom: 20px; padding: 10px;">
             Your username and password didn't match. Please try again.
         </div>
     {% endif %}
 
-    <form method="post">
+    <form method="post" style="max-width: 400px; margin: 0 auto;">
         {% csrf_token %}
-        <div>
+        <div class="form-group">
             <label>Username:</label>
             {{ form.username }}
         </div>
-        <div>
+
+        <div class="form-group">
             <label>Password:</label>
             {{ form.password }}
         </div>
-        <button type="submit">Login</button>
+
+        <div style="text-align: center;">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
     </form>
-</body>
-</html>
+{% endblock %}

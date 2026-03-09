@@ -1,0 +1,292 @@
+/* Reset and basic settings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Main container */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+/* Content */
+.content {
+    padding: 40px;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-warning {
+    background: #ffc107;
+    color: black;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+}
+
+/* FLEX-BOX for forms */
+.form-group {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+/* FLEX-BOX for rows of form */
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+/* FLEX-BOX for task list */
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.task {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: white;
+}
+
+.task.completed {
+    background-color: #f8f9fa;
+}
+
+.task.overdue {
+    border-left: 5px solid #dc3545;
+}
+
+.task-title {
+    flex: 1;
+}
+
+.task-title a {
+    color: #333;
+    text-decoration: none;
+}
+
+.task-title.completed a {
+    text-decoration: line-through;
+    color: #6c757d;
+}
+
+/* FLEX-BOX for actions in detail */
+.task-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+/* FLEX-BOX for filter links */
+.filter-links {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.filter-links a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.filter-links a.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* FLEX-BOX for delete modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Priority badges */
+.priority-high {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.priority-medium {
+    color: #ffc107;
+    font-weight: bold;
+}
+
+.priority-low {
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* Status badges */
+.badge {
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.badge-completed {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge-pending {
+    background-color: #6c757d;
+    color: white;
+}
+
+.badge-overdue {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Date info */
+.date-info {
+    color: #666;
+    font-size: 0.9em;
+    margin-left: 5px;  /* malý odstup od priority */
+}
+
+/* Help text */
+.help-text {
+    color: #666;
+    font-size: 0.85em;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* error list */
+.errorlist {
+    list-style: none;
+    margin-top: 5px;
+    padding: 0;
+    color: #dc3545;
+    font-size: 0.9em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .task {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .task-actions {
+        flex-direction: column;
+    }
+
+    .filter-links {
+        flex-wrap: wrap;
+    }
+}

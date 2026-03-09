@@ -1,71 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>My Tasks</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-        .task {
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-        }
-        .task.completed {
-            background-color: #f9f9f9;
-        }
-        .task.overdue {
-            border-left: 3px solid red;
-        }
-        .task-title.completed {
-            text-decoration: line-through;
-            color: #666;
-        }
-        .priority-high { font-weight: bold; color: #dc3545; }
-        .priority-medium { font-weight: bold; color: #ffc107; }
-        .priority-low { font-weight: bold; color: #28a745; }
-        .badge {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 0.8em;
-            margin-left: 5px;
-        }
-        .badge.completed {
-            background-color: #28a745;
-            color: white;
-        }
-        .badge.pending {
-            background-color: #6c757d;
-            color: white;
-        }
-        .badge.overdue {
-            background-color: #dc3545;
-            color: white;
-        }
-        .date {
-            color: #666;
-            font-size: 0.9em;
-            margin-left: 10px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Task Manager</h1>
-    <p>Welcome, <strong>{{ user.username }}</strong>!</p>
+{% extends "base.html" %}
 
-    <h2>Your Tasks</h2>
+{% block title %}Task Manager{% endblock %}
 
-    <div class="nargin-bottom: 20px;">
-        <a href="{% url 'todo_app:new_task' %}"
-           style="display: inline-block; padding: 10px 20px;
-           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-           color: white; text-decoration: none; border-radius: 5px;">
+{% block header %}Welcome, {{ user.username }}{% endblock %}
+
+{% block subheader %}Your Tasks{% endblock %}
+
+{% block content %}
+    <div class="filter-links">
+        <a href="?filter=all"
+            class="{% if current_filter == 'all' %}active{% endif %}">
+            All Tasks
+        </a>
+
+        <a href="?filter=incomplete"
+            class="{% if current_filter == 'incomplete' %}active{% endif %}">
+            Active
+        </a>
+
+        <a href="?filter=completed"
+            class="{% if current_filter == 'completed' %}active{% endif %}">
+            Completed
+        </a>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <a href="{% url 'todo_app:new_task' %}" class="btn btn-primary">
             + Create New Task
         </a>
     </div>
@@ -85,7 +45,7 @@
                     [{{ task.get_priority_display }}]
                 </span>
 
-                <span class="date">
+                <span class="date-info">
                     {% if task.due_date %}
                         Due: {{ task.due_date|date:"Y-m-d H:i" }}
                     {% else %}
@@ -94,22 +54,23 @@
                 </span>
 
                 {% if task.completed %}
-                    <span class="badge completed">COMPLETED</span>
+                    <span class="badge badge-completed">COMPLETED</span>
                 {% else %}
-                    <span class="badge pending">PENDING</span>
+                    <span class="badge badge-pending">PENDING</span>
                 {% endif %}
 
                 {% if task.is_overdue %}
-                    <span class="badge overdue">OVERDUE</span>
+                    <span class="badge badge-overdue">OVERDUE</span>
                 {% endif %}
             </div>
         {% endfor %}
     {% else %}
-        <p>You have no tasks yet.</p>
+        <p style="text-align: center; color: #666;">You have no tasks yet.</p>
     {% endif %}
 
-    <p style="margin-top: 30px;">
-        <a href="{% url 'logout' %}">Logout</a>
-    </p>
-</body>
-</html>
+    <div style="margin-top: 30px;">
+        <a href="{% url 'logout' %}" class="btn btn-primary">
+            Logout
+        </a>
+    </div>
+{% endblock %}
