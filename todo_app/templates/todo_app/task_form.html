@@ -20,9 +20,16 @@
 {% block content %}
     <div class="container">
         <div class="form-container">
+            <!--
+                Task creation/editing form.
+                Uses same template for both operations - behavior differs based on 'object' presence.
+                POST method ensures data is not exposed in URL.
+            -->
             <form method="post">
+                <!-- CSRF token is mandatory for all POST forms in Django -->
                 {% csrf_token %}
 
+                <!-- Display non-field errors (errors not tied to specific fields) -->
                 {% if form.non_field_errors %}
                     <div class="errorlist">
                         {% for error in form.non_field_errors %}
@@ -31,10 +38,12 @@
                     </div>
                 {% endif %}
 
-                <!-- TITLE FIELD - BEZ ID -->
+                <!-- ===== TITLE FIELD ===== -->
+                <!-- Required field - marked with asterisk for UX clarity -->
                 <div class="form-group">
                     <label>Title *</label>
                     {{ form.title }}
+                    <!-- Field-specific errors appear directly under the field -->
                     {% if form.title.errors %}
                         <ul class="errorlist">
                             {% for error in form.title.errors %}
@@ -44,7 +53,8 @@
                     {% endif %}
                 </div>
 
-                <!-- DESCRIPTION FIELD - BEZ ID -->
+                <!-- ===== DESCRIPTION FIELD ===== -->
+                <!-- Optional field - help text explains it's not required -->
                 <div class="form-group">
                     <label>Description</label>
                     {{ form.description }}
@@ -58,8 +68,10 @@
                     <div class="help-text">Optional: Add more details about your task</div>
                 </div>
 
-                <!-- PRIORITY AND CATEGORY FIELDS - BEZ ID -->
+                <!-- ===== PRIORITY AND CATEGORY FIELDS ===== -->
+                <!-- Displayed side-by-side in a two-column layout for space efficiency -->
                 <div class="form-row">
+                    <!-- Priority field - uses choice widget (dropdown) -->
                     <div class="form-group">
                         <label>Priority</label>
                         {{ form.priority }}
@@ -72,6 +84,7 @@
                         {% endif %}
                     </div>
 
+                    <!-- Category field - dropdown with all user's categories -->
                     <div class="form-group">
                         <label>Category</label>
                         {{ form.category }}
@@ -85,7 +98,8 @@
                     </div>
                 </div>
 
-                <!-- DUE DATE FIELD - BEZ ID -->
+                <!-- ===== DUE DATE FIELD ===== -->
+                <!-- Optional date field with browser's native datetime picker -->
                 <div class="form-group">
                     <label>Due Date</label>
                     {{ form.due_date }}
@@ -99,13 +113,17 @@
                     <div class="help-text">Optional: Set a deadline for your task</div>
                 </div>
 
-                <!-- FORM ACTIONS -->
+                <!-- ===== FORM ACTIONS ===== -->
+                <!-- Submit and cancel buttons -->
                 <div class="form-actions">
+                    <!-- Submit button text changes based on operation type -->
                     <button type="submit" class="btn btn-primary">
                         {% if object %}SAVE CHANGES{% else %}CREATE TASK{% endif %}
                     </button>
+                    <!-- Cancel returns to task list without saving -->
                     <a href="{% url 'todo_app:task_list' %}" class="btn btn-secondary">
-                        CANCEL</a>
+                        CANCEL
+                    </a>
                 </div>
             </form>
         </div>

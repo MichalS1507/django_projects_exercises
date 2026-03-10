@@ -7,26 +7,37 @@
 {% block subheader %}Please log in to continue{% endblock %}
 
 {% block content %}
+    <!-- Display login error message if authentication fails -->
     {% if form.errors %}
-        <div class="badge badge-overdue" style="margin-bottom: 20px; padding: 10px;">
+        <div class="badge badge-overdue"
+             style="margin-bottom: 20px; padding: 10px; text-align: center;">
+            <!-- Generic error message for security reasons (don't reveal if username exists) -->
             Your username and password didn't match. Please try again.
         </div>
     {% endif %}
 
+    <!-- Login form - uses POST method for security (credentials not exposed in URL) -->
     <form method="post" style="max-width: 400px; margin: 0 auto;">
+        <!-- CSRF token is mandatory for all POST forms in Django -->
         {% csrf_token %}
+
+        <!-- Username input field -->
         <div class="form-group">
             <label>Username:</label>
             {{ form.username }}
         </div>
 
+        <!-- Password input field - type="password" hides characters -->
         <div class="form-group">
             <label>Password:</label>
             {{ form.password }}
         </div>
 
+        <!-- Submit button container -->
         <div style="text-align: center;">
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn btn-primary">
+                Login
+            </button>
         </div>
     </form>
 {% endblock %}

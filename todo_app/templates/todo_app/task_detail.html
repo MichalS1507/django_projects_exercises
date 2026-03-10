@@ -8,44 +8,53 @@
 
 {% block content %}
     <div class="task-detail">
-        <!-- STATUS BADGES -->
+        <!-- ===== STATUS BADGES ===== -->
+        <!-- Display task status indicators at the top for quick visibility -->
         <div style="margin-bottom: 20px;">
             {% if task.completed %}
+                <!-- Green badge for completed tasks -->
                 <span class="badge badge-completed">COMPLETED</span>
             {% else %}
+                <!-- Gray badge for pending tasks -->
                 <span class="badge badge-pending">PENDING</span>
             {% endif %}
 
+            <!-- Red warning badge for overdue tasks (shown only when applicable) -->
             {% if task.is_overdue %}
                 <span class="badge badge-overdue">OVERDUE</span>
             {% endif %}
         </div>
 
-        <!-- META INFORMÁCIE -->
+        <!-- ===== TASK METADATA ===== -->
+        <!-- Display task details in a 2-column grid layout for better space utilization -->
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 30px;">
-            <!-- Priorita -->
+
+            <!-- Priority field - shows task importance with color coding -->
             <div class="form-group">
                 <label>Priority</label>
+                <!-- Dynamic priority class adds appropriate color (red/yellow/green) -->
                 <div class="priority-{% if task.priority == 1 %}high{% elif task.priority == 2 %}medium{% else %}low{% endif %}"
                      style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px;">
                     {{ task.get_priority_display }}
                 </div>
             </div>
 
-            <!-- Kategória -->
+            <!-- Category field - shows task classification with color dot -->
             <div class="form-group">
                 <label>Category</label>
                 <div style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
                     {% if task.category %}
+                        <!-- Colored dot matching category color for visual identification -->
                         <span style="display: inline-block; width: 12px; height: 12px; background-color: {{ task.category.color }}; border-radius: 3px;"></span>
                         {{ task.category.name }}
                     {% else %}
+                        <!-- Italic text for empty category (better UX than blank space) -->
                         <em>No category</em>
                     {% endif %}
                 </div>
             </div>
 
-            <!-- Dátum vytvorenia -->
+            <!-- Creation date - automatically set when task was created -->
             <div class="form-group">
                 <label>Created</label>
                 <div style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px;">
@@ -53,47 +62,59 @@
                 </div>
             </div>
 
-            <!-- Termín -->
+            <!-- Due date - deadline for task completion (optional) -->
             <div class="form-group">
                 <label>Due date</label>
                 <div style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px;">
                     {% if task.due_date %}
                         {{ task.due_date|date:"Y-m-d H:i" }}
                     {% else %}
+                        <!-- Clear indication when no deadline is set -->
                         <em>No deadline</em>
                     {% endif %}
                 </div>
             </div>
         </div>
 
-        <!-- POPIS -->
+        <!-- ===== TASK DESCRIPTION ===== -->
+        <!-- Optional detailed description - only shown if it exists -->
         {% if task.description %}
         <div class="form-group" style="margin-bottom: 30px;">
             <label>Description</label>
+            <!-- Light gray background to distinguish description from metadata -->
             <div style="padding: 15px; border: 1px solid #e0e0e0; border-radius: 8px; background: #f9f9f9;">
+                <!-- linebreaks filter converts newlines to HTML <br> tags -->
                 {{ task.description|linebreaks }}
             </div>
         </div>
         {% endif %}
 
-        <!-- AKCIE -->
+        <!-- ===== ACTION BUTTONS ===== -->
+        <!-- Task operations: back, edit, delete, complete -->
         <div class="task-actions">
+            <!-- Primary navigation - always visible -->
             <a href="{% url 'todo_app:task_list' %}" class="btn btn-primary">
                 BACK TO LIST
             </a>
 
+            <!-- Action buttons aligned to the right -->
             <div style="display: flex; gap: 10px; margin-left: auto;">
+
+                <!-- Edit button - leads to update form -->
                 <a href="{% url 'todo_app:update_task' task.pk %}"
                    class="btn btn-warning">
                     EDIT
                 </a>
 
+                <!-- Delete button - triggers confirmation modal -->
                 <a href="{% url 'todo_app:delete_task' task.pk %}"
                    class="btn btn-danger">
                     DELETE
                 </a>
 
+                <!-- Complete button - only shown for incomplete tasks -->
                 {% if not task.completed %}
+                    <!-- Uses POST method (via form) for state-changing operation -->
                     <form method="post" action="{% url 'todo_app:complete_task' task.pk %}"
                           style="display: inline;">
                         {% csrf_token %}
@@ -106,18 +127,23 @@
         </div>
     </div>
 
-    <!-- DELETE MODAL -->
+    <!-- ===== DELETE CONFIRMATION MODAL ===== -->
+    <!-- Only shown when delete_mode is True (set by TaskDeleteView) -->
     {% if delete_mode %}
     <div class="modal">
         <div class="modal-content">
+            <!-- Warning icon for visual emphasis -->
             <div class="modal-icon">⚠️</div>
             <h2>Delete "{{ task.title }}"?</h2>
-            <p>This action cannot be undone.</p>
+            <p class="text-muted">This action cannot be undone.</p>
 
+            <!-- Modal action buttons -->
             <div class="modal-actions">
+                <!-- Delete confirmation form (POST method) -->
                 <form method="post" action="{% url 'todo_app:delete_task' task.pk %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">YES, DELETE</button>
+                    <!-- Cancel returns to normal detail view -->
                     <a href="{% url 'todo_app:task_detail' task.pk %}"
                        class="btn btn-secondary">CANCEL</a>
                 </form>

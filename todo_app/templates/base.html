@@ -1,28 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Load static files tag - required for accessing static resources like CSS -->
     {% load static %}
+
+    <!-- Character encoding - UTF-8 supports all characters and symbols -->
     <meta charset="UTF-8">
+
+    <!-- Link to main stylesheet - all visual styling is centralized here -->
     <link rel="stylesheet" href="{% static 'style.css' %}" type="text/css">
+
+    <!-- Responsive design meta tag - ensures proper scaling on mobile devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Compatibility meta tag - ensures latest rendering engine in IE -->
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!--
+        Page title - can be overridden in child templates.
+        Default: "ToDo App" if no title block is provided.
+    -->
     <title>{% block title %}ToDo App{% endblock %}</title>
+
+    <!--
+        Extra CSS block - allows child templates to add page-specific styles.
+        Example: a detail page might need additional CSS for modals.
+    -->
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    <!--
+        Main container - wraps all content and provides consistent
+        width, background, and shadow across all pages.
+    -->
     <div class="container">
+
+        <!--
+            Header section - consistent across all pages with gradient background.
+            Contains two blocks that can be customized per page.
+        -->
         <div class="header">
-            <h1>{% block header %}Task Mnager{% endblock %}</h1>
+            <!--
+                Main heading block - typically shows page title or welcome message.
+                Default: "Task Manager" (note: there's a typo "Mnager" to fix below)
+            -->
+            <h1>{% block header %}Task Manager{% endblock %}</h1>
+
+            <!--
+                Subheader block - provides additional context or instructions.
+                Default shows username, but can be overridden (e.g., "Task Detail")
+            -->
             <p>{% block subheader %}Welcome, {{ user.username }}{% endblock %}</p>
         </div>
 
+        <!--
+            Content section - main area where page-specific content goes.
+            This block must be overridden in every child template.
+        -->
         <div class="content">
             {% block content %}
-
+            <!-- Content goes here - to be provided by child templates -->
             {% endblock %}
         </div>
     </div>
 
+    <!--
+        Extra JavaScript block - allows child templates to add page-specific scripts.
+        Placed at end of body for better page load performance.
+    -->
     {% block extra_js %}{% endblock %}
 </body>
 </html>

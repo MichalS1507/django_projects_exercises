@@ -7,44 +7,58 @@
 {% block subheader %}Your Tasks{% endblock %}
 
 {% block content %}
+    <!-- ===== FILTER LINKS ===== -->
+    <!-- Allow users to filter tasks by completion status -->
     <div class="filter-links">
+        <!-- All tasks - shows every task belonging to the user -->
         <a href="?filter=all"
             class="{% if current_filter == 'all' %}active{% endif %}">
             All Tasks
         </a>
 
+        <!-- Active (incomplete) tasks - only tasks not yet completed -->
         <a href="?filter=incomplete"
             class="{% if current_filter == 'incomplete' %}active{% endif %}">
             Active
         </a>
 
+        <!-- Completed tasks - only tasks marked as done -->
         <a href="?filter=completed"
             class="{% if current_filter == 'completed' %}active{% endif %}">
             Completed
         </a>
     </div>
 
+    <!-- ===== CREATE NEW TASK BUTTON ===== -->
+    <!-- Primary call-to-action for adding tasks -->
     <div style="margin-bottom: 20px;">
         <a href="{% url 'todo_app:new_task' %}" class="btn btn-primary">
             + Create New Task
         </a>
     </div>
 
+    <!-- ===== TASK LIST ===== -->
+    <!-- Display all tasks matching current filter -->
     {% if tasks %}
         {% for task in tasks %}
+            <!-- Individual task item with dynamic classes based on state -->
             <div class="task {% if task.completed %}completed{% endif %}
             {% if task.is_overdue %}overdue{% endif %}">
+
+                <!-- Task title - clickable link to detail view -->
                 <span class="task-title {% if task.completed %}completed{% endif %}">
                     <a href="{% url 'todo_app:task_detail' task.pk %}">
                         {{ task.title }}
                     </a>
                 </span>
 
+                <!-- Priority indicator with color coding -->
                 <span class="priority-{% if task.priority == 1 %}high
                 {% elif task.priority == 2 %}medium{% else %}low{% endif %}">
                     [{{ task.get_priority_display }}]
                 </span>
 
+                <!-- Due date information (if set) -->
                 <span class="date-info">
                     {% if task.due_date %}
                         Due: {{ task.due_date|date:"Y-m-d H:i" }}
@@ -53,21 +67,26 @@
                     {% endif %}
                 </span>
 
+                <!-- Status badge - shows if task is completed or pending -->
                 {% if task.completed %}
                     <span class="badge badge-completed">COMPLETED</span>
                 {% else %}
                     <span class="badge badge-pending">PENDING</span>
                 {% endif %}
 
+                <!-- Overdue warning badge - only shown for overdue tasks -->
                 {% if task.is_overdue %}
                     <span class="badge badge-overdue">OVERDUE</span>
                 {% endif %}
             </div>
         {% endfor %}
     {% else %}
+        <!-- Empty state message - shown when no tasks match current filter -->
         <p style="text-align: center; color: #666;">You have no tasks yet.</p>
     {% endif %}
 
+    <!-- ===== LOGOUT BUTTON ===== -->
+    <!-- Allows user to end their session -->
     <div style="margin-top: 30px;">
         <a href="{% url 'logout' %}" class="btn btn-primary">
             Logout
