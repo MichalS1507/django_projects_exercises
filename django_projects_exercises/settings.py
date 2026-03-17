@@ -45,6 +45,11 @@ INSTALLED_APPS = [
     # Custom apps
     'todo_app',  # Main todo_app application
 
+    'properties',
+
+    'rest_framework',
+    'corsheaders',
+
     # Django built-in apps
     'django.contrib.admin',  # Admin interface
     'django.contrib.auth',  # Authentication framework
@@ -54,9 +59,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',  # Static file management
 ]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Middleware components - process requests and responses globally
 # Order is important - each middleware wraps the next
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -64,6 +73,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',  # Associate users with requests
     'django.contrib.messages.middleware.MessageMiddleware',  # Flash messages
     'django.middleware.clickjacking.XFrameOptionsMiddleware',  # Clickjacking protection
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
 ]
 
 # Root URL configuration - points to the main urls.py
