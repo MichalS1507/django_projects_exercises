@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('todo/', include('todo_app.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('api/', include('properties.urls')),
 ]
 
 if settings.DEBUG:
