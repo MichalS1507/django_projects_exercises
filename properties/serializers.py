@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Property, PropertyImage, Booking
+from django.contrib.auth.models import User
 
 class PropertyImageSerializer(serializers.ModelSerializer):
 
@@ -58,3 +59,16 @@ class BookingSerializer(serializers.ModelSerializer):
         if property_obj and property_obj.owner == user:
             raise serializers.ValidationError("You cannot book your own property.")
         return data
+
+class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'password']
+
+    def create(self, validated_data):
+        user = User.objects.create_user(validated_data['username'],
+                                        validated_data['email'],
+                                        validated_data['password'])
+        return user
