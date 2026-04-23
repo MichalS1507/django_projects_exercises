@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
-import { Link } from "react-router-dom";
 
-function PropertyList() {
-    const [properties, setProperties] = useState([]);
+function MyBookings() {
+    const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchProperties = async () => {
+        const fetchBookings = async () => {
             try {
-                const response = await api.get('properties/');
-                setProperties(response.data);
+                const response = await api.get('bookings/');
+                setBookings(response.data);
             } catch (error) {
-                console.error("Error fetching properties:", error);
+                console.error("Error fetching bookings:", error);
             } finally {
                 setLoading(false);
             }
         };
-        fetchProperties();
+        fetchBookings();
     }, []);
 
     const handleLogout = () => {
@@ -31,18 +30,18 @@ function PropertyList() {
     return (
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h1>Properties</h1>
+                <h1>My Bookings</h1>
                 <button onClick={handleLogout} style={{ padding: '8px 16px' }}>
                     Logout
                 </button>
             </div>
 
-            {properties.length == 0 ? (
-                <p>No properties found.</p>
+            {bookings.length == 0 ? (
+                <p>No bookings found.</p>
             ) : (
                 <ul style={{ listStyle: "none", padding: 0 }}>
-                    {properties.map(property => (
-                        <li key={property.id} style={{
+                    {bookings.map(booking => (
+                        <li key={booking.id} style={{
                             border: '1px solid #ddd',
                             borderRadius: '8px',
                             padding: '16px',
@@ -50,15 +49,12 @@ function PropertyList() {
                             backgroundColor: '#f9f9f9'
                         }}>
                             <strong style={{ fontSize: '18px' }}>
-                                <Link to={`/properties/${property.id}`} style={{ textDecoration: 'none', color: '#007bff' }}>
-                                    {property.title}
-                                </Link>
+                                <a href={`/properties/${booking.property_detail?.id}`} style={{ textDecoration: 'none', color: '#007bff' }}>
+                                    {booking.property_detail?.title || 'Unknown Property'}
+                                </a>
                             </strong><br />
-                            <span>Price: {property.price}€</span><br />
-                            <span>City: {property.city}</span><br />
-                            <span>Type: {property.offer_type}</span><br />
-                            <span>Bedrooms: {property.bedrooms}</span><br />
-                            <span>Area: {property.area} m²</span>
+                            <span>Message: {booking.message}</span><br />
+                            <span>Booked on: {new Date(booking.created_at).toLocaleDateString()}</span>
                         </li>
                     ))}
                 </ul>
@@ -67,4 +63,4 @@ function PropertyList() {
     );
 }
 
-export default PropertyList;
+export default MyBookings;

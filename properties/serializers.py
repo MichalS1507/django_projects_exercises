@@ -45,12 +45,14 @@ class PropertySerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'created_at', 'updated_at']
 
 class BookingSerializer(serializers.ModelSerializer):
+    property = serializers.PrimaryKeyRelatedField(queryset=Property.objects.all())
+    property_detail = PropertySerializer(source='property', read_only=True)
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Booking
-        fields = ['id', 'property', 'message', 'created_at', 'user']
-        read_only_fields = ['id', 'created_at']
+        fields = ['id', 'property', 'property_detail', 'message', 'created_at', 'user']
+        read_only_fields = ['id', 'created_at', 'property_detail']
 
     def validate(self, data):
         property_obj = data.get('property')
